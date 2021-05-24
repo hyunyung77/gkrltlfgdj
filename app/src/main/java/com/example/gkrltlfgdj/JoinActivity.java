@@ -1,5 +1,8 @@
 package com.example.gkrltlfgdj;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+//import android.support.v4.app.
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,8 +12,11 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import com.example.gkrltlfgdj.R;
+import com.example.gkrltlfgdj.RetrofitClient;
+import com.example.gkrltlfgdj.ServiceApi;
+import com.example.gkrltlfgdj.JoinData;
+import com.example.gkrltlfgdj.JoinResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,7 +31,7 @@ public class JoinActivity extends AppCompatActivity {
     private ServiceApi service;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
 
@@ -57,36 +63,36 @@ public class JoinActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        //패스워드의 유효성 검사
-        if(password.isEmpty()){
-            mPasswordView.setError("비밀번호를 입력해주세요."); //블로그 제작자는 mEmailView로 되어있음.(로그인파트도 똑같음)
+        // 패스워드의 유효성 검사
+        if (password.isEmpty()) {
+            mPasswordView.setError("비밀번호를 입력해주세요.");
             focusView = mPasswordView;
             cancel = true;
-        } else if (!isPasswordValid(password)){
+        } else if (!isPasswordValid(password)) {
             mPasswordView.setError("6자 이상의 비밀번호를 입력해주세요.");
             focusView = mPasswordView;
             cancel = true;
         }
 
-        //이메일의 유효성 검사
-        if(email.isEmpty()){
+        // 이메일의 유효성 검사
+        if (email.isEmpty()) {
             mEmailView.setError("이메일을 입력해주세요.");
             focusView = mEmailView;
             cancel = true;
-        } else if(!isEmailValid(email)){
+        } else if (!isEmailValid(email)) {
             mEmailView.setError("@를 포함한 유효한 이메일을 입력해주세요.");
             focusView = mEmailView;
             cancel = true;
         }
 
-        //이름의 유효성 검사
-        if(name.isEmpty()){
+        // 이름의 유효성 검사
+        if (name.isEmpty()) {
             mNameView.setError("이름을 입력해주세요.");
             focusView = mNameView;
             cancel = true;
         }
 
-        if(cancel){
+        if (cancel) {
             focusView.requestFocus();
         } else {
             startJoin(new JoinData(name, email, password));
@@ -94,7 +100,7 @@ public class JoinActivity extends AppCompatActivity {
         }
     }
 
-    private void startJoin(JoinData data){
+    private void startJoin(JoinData data) {
         service.userJoin(data).enqueue(new Callback<JoinResponse>() {
             @Override
             public void onResponse(Call<JoinResponse> call, Response<JoinResponse> response) {
